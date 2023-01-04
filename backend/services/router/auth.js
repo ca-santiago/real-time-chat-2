@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const authRouter = Router();
 
-authRouter.post("/", (req, res) => {
+authRouter.get("/", (req, res) => {
   res.end("Working");
 });
 
