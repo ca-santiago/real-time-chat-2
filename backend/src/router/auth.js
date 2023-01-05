@@ -8,7 +8,11 @@ authRouter.post(
   authControllers.validations.login,
   authControllers.login
 );
-authRouter.post("/register", authControllers.register);
+authRouter.post(
+  "/register",
+  authControllers.validations.register,
+  authControllers.register
+);
 authRouter.post("/renew", authControllers.renewToken);
 
 module.exports = authRouter;
