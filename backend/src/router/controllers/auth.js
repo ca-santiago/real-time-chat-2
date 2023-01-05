@@ -3,9 +3,32 @@ const bcrypt = require("bcryptjs");
 
 const UserModel = require("../../services/mongoose/models/User");
 const validateBody = require("../middlewares/validations");
+const tokenService = require("../../services/token");
+
+const getUserDTO = ({ email, name, _id }) => ({
+  email,
+  name,
+  id: _id,
+});
 
 const login = async (req, res) => {
-  res.send("Login...").end();
+  const { email, password } = req.body;
+
+  const user = await UserModel.findOne({ email });
+
+  if (!user) {
+    return res.status(404).end();
+  }
+
+  const passwordMatch = bcrypt.compareSync(password, user.password);
+  if (!passwordMatch) {
+    return res.status(404).end();
+  }
+
+  // Sign token
+  const token = await tokenService.signToken(user._id);
+
+  return res.json({ user: getUserDTO(user), token });
 };
 
 const register = async (req, res) => {
@@ -22,7 +45,9 @@ const register = async (req, res) => {
   const user = new UserModel({ email, password: hash, name });
   await user.save();
 
-  return res.status(200).json({ user: { email, name, id: user._id } });
+  const token = await tokenService.signToken(user._id);
+
+  return res.status(200).json({ user: getUserDTO(user), token });
 };
 
 const renewToken = async (req, res) => {};
