@@ -1,4 +1,6 @@
 const { check } = require("express-validator");
+const bcrypt = require("bcryptjs");
+
 const UserModel = require("../../services/mongoose/models/User");
 const validateBody = require("../middlewares/validations");
 
@@ -14,10 +16,13 @@ const register = async (req, res) => {
     return res.status(401).end();
   }
 
-  const user = new UserModel({ email, password, name });
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+
+  const user = new UserModel({ email, password: hash, name });
   await user.save();
 
-  return res.status(200).json(user);
+  return res.status(200).json({ user: { email, name, id: user._id } });
 };
 
 const renewToken = async (req, res) => {};
