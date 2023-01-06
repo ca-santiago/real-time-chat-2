@@ -34,7 +34,7 @@ class Server {
       this.setupSockets();
       this.server.listen(this.port);
     } catch (er) {
-      throw err;
+      throw er;
     }
     return this;
   }

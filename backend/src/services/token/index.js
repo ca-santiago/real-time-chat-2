@@ -14,11 +14,18 @@ const signToken = ({ userId }) => {
   });
 };
 
-const decodeToken = () => {};
+const validateToken = (token) => {
+  try {
+    return jwt.verify(token, jwtSecret);
+  } catch (err) {
+    console.devlog("[token-service] Error verifying the token");
+    return undefined;
+  }
+};
 
 const tokenService = {
   signToken,
-  decodeToken,
+  validateToken,
 };
 
 module.exports = tokenService;

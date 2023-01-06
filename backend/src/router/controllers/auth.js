@@ -2,7 +2,7 @@ const { check } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
 const UserModel = require("../../services/mongoose/models/User");
-const validateBody = require("../middlewares/validations");
+const { validateBody } = require("../middlewares/validations");
 const tokenService = require("../../services/token");
 
 const getUserDTO = ({ email, name, _id }) => ({
@@ -26,7 +26,7 @@ const login = async (req, res) => {
   }
 
   // Sign token
-  const token = await tokenService.signToken(user._id);
+  const token = await tokenService.signToken({ userId: user._id });
 
   return res.json({ user: getUserDTO(user), token });
 };
@@ -50,7 +50,17 @@ const register = async (req, res) => {
   return res.status(200).json({ user: getUserDTO(user), token });
 };
 
-const renewToken = async (req, res) => {};
+const renewToken = async (req, res) => {
+  const token = req.header("x-session-token");
+  const tokenPayload = tokenService.validateToken(token);
+  if (!tokenPayload) {
+    return res.status(401).end();
+  }
+
+  const { userId } = tokenPayload;
+  const newToken = await tokenService.signToken({ userId });
+  res.status(202).json({ token: newToken });
+};
 
 const validations = {
   login: [
