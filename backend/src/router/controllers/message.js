@@ -39,7 +39,7 @@ const validations = {
     validateBody,
   ],
   createMessage: [
-    check("receiver").exists(),
+    check("receiver").isUUID('4'),
     check("content").isString(),
     check("offset", "offset should be a number")
       .isNumeric({ no_symbols: true })
