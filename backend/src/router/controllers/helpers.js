@@ -4,6 +4,11 @@ const saveUserId = (req, payload) => {
 };
 
 const getUserId = (req) => {
+  if (!req.metadata) {
+    throw new Error(
+      "You should use middlewares.validateToken to have access to userId"
+    );
+  }
   return req.metadata["userId"] || null;
 };
 

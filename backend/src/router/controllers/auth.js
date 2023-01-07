@@ -1,7 +1,7 @@
 const { check } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
-const UserModel = require("../../services/mongoose/models/User");
+const { UserModel } = require("../../services/mongoose/models");
 const { validateBody } = require("../middlewares/validations");
 const tokenService = require("../../services/token");
 

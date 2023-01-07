@@ -7,6 +7,7 @@ const cors = require("cors");
 const ChatManager = require("./chat/sockets");
 const { startMongoConnection } = require("./mongodb");
 const { authRouter } = require("../router");
+const messagesRouter = require("../router/message");
 
 class Server {
   constructor() {
@@ -18,9 +19,11 @@ class Server {
 
   setupMiddlewares() {
     this.app.use(express.json());
+    this.app.use(express.urlencoded({extended: true}));
     this.app.use(cors({ methods: "*" }));
     this.app.use(express.static(path.resolve(__dirname, "../public")));
     this.app.use("/auth", authRouter);
+    this.app.use("/messages", messagesRouter);
   }
 
   setupSockets() {
