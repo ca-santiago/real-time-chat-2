@@ -1,7 +1,6 @@
 import React from "react";
 import AppContextActions, {
   CleanSession,
-  LoadingSessionUpdate,
   RegisterSession,
 } from "./actions";
 import AppContextReducer from "./reducer";
