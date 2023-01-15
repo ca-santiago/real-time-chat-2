@@ -11,7 +11,7 @@ const getMessagesInChat = async (req, res) => {
     const data = await getAllMessagesInChat(userId, receiver, offset);
     res.status(200).json(data);
   } catch (err) {
-    console.devlog("[messages] Failed loading messages");
+    console.log("[messages] Failed loading messages");
     res.status(500).end();
   }
 };
@@ -27,7 +27,7 @@ const createMessage = async (req, res) => {
     });
     res.status(200).json(data);
   } catch (err) {
-    console.devlog("[messages-controller] Failed creating messages");
+    console.log("[messages-controller] Failed creating messages");
     res.status(500).end();
   }
 };

@@ -1,9 +1,9 @@
-const saveUserId = (req, payload) => {
+export const saveUserId = (req: any, payload: string) => {
   req.metadata = {};
   req.metadata["userId"] = payload;
 };
 
-const getUserId = (req) => {
+export const getUserId = (req: any) => {
   if (!req.metadata) {
     throw new Error(
       "You should use middlewares.validateToken to have access to userId"
@@ -11,10 +11,3 @@ const getUserId = (req) => {
   }
   return req.metadata["userId"] || null;
 };
-
-const contextHelpers = {
-  saveUserId,
-  getUserId,
-};
-
-module.exports = contextHelpers;
