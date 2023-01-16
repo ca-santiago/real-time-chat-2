@@ -6,7 +6,7 @@ export const saveUserId = (req: any, payload: string) => {
 export const getUserId = (req: any) => {
   if (!req.metadata) {
     throw new Error(
-      "You should use middlewares.validateToken to have access to userId"
+      "You should should use the validateToken middleware to access the user id"
     );
   }
   return req.metadata["userId"] || null;

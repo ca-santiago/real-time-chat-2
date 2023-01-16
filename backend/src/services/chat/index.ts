@@ -1,16 +1,8 @@
 import { Chat, ChatService, Message } from "../../domain/types";
-import { ChatMemberModel, ChatModel, MessageModel } from "./data-access";
+import { ChatModel, MessageModel } from "./data-access";
 
-const createChat = async (
-  name: string,
-  description: string,
-  members: string[]
-): Promise<Chat> => {
-  const chat = await ChatModel.create({ name, description });
-  await ChatMemberModel.create(
-    members.map((userId) => ({ userId, chatId: chat._id }))
-  );
-  return chat;
+const createChat = async (members: string[]): Promise<Chat> => {
+  return await ChatModel.create({ members });
 };
 
 const getChat = async (chatId: string): Promise<Chat | null> => {
@@ -21,15 +13,21 @@ const addMemberToChat = async (
   chatId: string,
   userId: string
 ): Promise<Chat | null> => {
-  await ChatMemberModel.create({ userId, chatId });
-  return getChat(chatId);
+  const chat = await ChatModel.findOneAndUpdate(
+    { _id: chatId },
+    { $push: { members: userId } }
+  );
+  return chat?.toObject() || null;
 };
 
 const removeMemberFromChat = async (
   chatId: string,
   userId: string
 ): Promise<Chat | null> => {
-  await ChatMemberModel.deleteOne({ userId, chatId });
+  const chat = await ChatModel.findOneAndUpdate(
+    { _id: chatId },
+    { $pull: { members: userId } }
+  );
   return getChat(chatId);
 };
 
@@ -37,21 +35,10 @@ const checkExistingChat = async (
   user1: string,
   user2: string
 ): Promise<Chat | null> => {
-  const chatMembers = await ChatMemberModel.aggregate([
-    { $match: { userId: { $in: [user1, user2] } } },
-    {
-      $group: {
-        _id: "$chatId",
-        count: { $sum: 1 },
-      },
-    },
-    {
-      $match: { count: 2 },
-    },
-  ]);
-  if (chatMembers.length < 2) return null;
-  console.log({ chatMembers });
-  return ChatModel.findById(chatMembers[0].chatId);
+  const chat = await ChatModel.findOne({
+    members: { $all: [user1, user2] },
+  });
+  return chat;
 };
 
 const sendMessage = async (

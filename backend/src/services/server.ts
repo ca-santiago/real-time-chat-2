@@ -7,7 +7,7 @@ import morgan from "morgan";
 
 import ChatManager from "./chat/sockets";
 import { startMongoConnection } from "./mongodb";
-import { authRouter } from "../router";
+import { authRouter, chatRouter } from "../router";
 // import messagesRouter from "../router/message";
 
 export default class Server {
@@ -30,6 +30,7 @@ export default class Server {
     this.app.use(cors({ methods: "*" }));
     this.app.use(express.static(resolve(__dirname, "../public")));
     this.app.use("/auth", authRouter);
+    this.app.use("/chat", chatRouter);
     // this.app.use("/messages", messagesRouter);
   }
 
@@ -47,7 +48,7 @@ export default class Server {
       });
       this.app.use("/ping", (req, res) => {
         res.send("pong");
-      })
+      });
     } catch (er) {
       throw er;
     }

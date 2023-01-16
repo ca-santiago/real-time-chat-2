@@ -6,15 +6,9 @@ export type User = {
 };
 
 export type Chat = {
-  id: string;
-  name: string;
-  description: string;
-};
-
-export type ChatMember = {
-  id: string;
-  userId: string;
-  chatId: string;
+  _id: string;
+  name?: string;
+  members: string[];
 };
 
 export type Message = {
@@ -26,11 +20,7 @@ export type Message = {
 };
 
 export type ChatService = {
-  createChat(
-    name: string,
-    description: string,
-    members: string[]
-  ): Promise<Chat>;
+  createChat(members: string[]): Promise<Chat>;
   getChat(chatId: string): Promise<Chat | null>;
   addMemberToChat(chatId: string, userId: string): Promise<Chat | null>;
   removeMemberFromChat(chatId: string, userId: string): Promise<Chat | null>;

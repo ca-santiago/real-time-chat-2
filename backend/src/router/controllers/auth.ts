@@ -1,10 +1,8 @@
-import { Request, Response } from "express";
 import { UserUseCases } from "../../domain/user";
 
 import { check } from "express-validator";
 import { validateBody } from "../middlewares/validations";
-
-type AppController = (req: Request, res: Response) => any;
+import { AppController } from "../types";
 
 const login: AppController = async (req, res) => {
   try {
