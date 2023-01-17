@@ -46,9 +46,6 @@ export default class Server {
       this.server.listen(this.port, () => {
         console.log(`[Server] Running on port ${this.port}`);
       });
-      this.app.use("/ping", (req, res) => {
-        res.send("pong");
-      });
     } catch (er) {
       throw er;
     }
