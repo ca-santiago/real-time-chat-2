@@ -44,13 +44,21 @@ const checkExistingChat = async (
 const sendMessage = async (
   chatId: string,
   userId: string,
-  content: string
+  content: string,
+  timestamp: string = Date.now().toString()
 ): Promise<Message> => {
-  return MessageModel.create({ content, userId, chatId });
+  return MessageModel.create({ content, userId, chatId, timestamp });
 };
 
-const getMessages = async (chatId: string): Promise<Message[]> => {
-  return MessageModel.find({ chatId });
+const getMessages = async (
+  chatId: string,
+  offset: number,
+  count: number
+): Promise<Message[]> => {
+  return MessageModel.find({ chatId })
+    .skip(offset)
+    .limit(count)
+    .sort({ timestamp: -1 });
 };
 
 const chatService: ChatService = {

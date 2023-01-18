@@ -1,9 +1,14 @@
 import { Router } from "express";
 import chatControllers from "./controllers/chat";
+import messageController from "./controllers/message";
 import { validateToken } from "./middlewares/validations";
 
-const authRouter = Router();
+const chatRouter = Router();
 
-authRouter.post("/discover", validateToken, chatControllers.discoverChat);
+chatRouter.post("/discover", validateToken, chatControllers.discoverChat);
 
-export default authRouter;
+chatRouter.get("/:id/messages", validateToken, messageController.getMessages);
+
+chatRouter.post("/:id", validateToken, messageController.createMessage);
+
+export default chatRouter;

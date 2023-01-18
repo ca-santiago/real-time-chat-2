@@ -15,7 +15,6 @@ const registerUser = async (props: RegisterUserProps) => {
   const existUser = await UserModel.findOne({ email });
   if (existUser) {
     throw new Error('[register-user] duplicated email');
-    // return res.status(401).end();
   }
 
   const salt = bcrypt.genSaltSync(10);

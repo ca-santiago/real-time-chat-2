@@ -28,7 +28,12 @@ export type ChatService = {
   sendMessage(
     chatId: string,
     userId: string,
-    content: string
+    content: string,
+    timestamp?: string
   ): Promise<Message>;
-  getMessages(chatId: string): Promise<Message[]>;
+  getMessages(
+    chatId: string,
+    offset: number,
+    count: number
+  ): Promise<Message[]>;
 };
