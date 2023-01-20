@@ -5,6 +5,8 @@ import { validateToken } from "./middlewares/validations";
 
 const chatRouter = Router();
 
+chatRouter.get("/", validateToken, chatControllers.getChatList);
+
 chatRouter.post("/discover", validateToken, chatControllers.discoverChat);
 
 chatRouter.get("/:id/messages", validateToken, messageController.getMessages);

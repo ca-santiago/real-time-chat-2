@@ -36,4 +36,9 @@ export type ChatService = {
     offset: number,
     count: number
   ): Promise<Message[]>;
+  getChatsByUserId(
+    userId: string,
+    offset: number,
+    count: number
+  ): Promise<Chat[]>;
 };

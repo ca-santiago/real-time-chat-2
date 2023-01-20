@@ -14,7 +14,7 @@ const getMessagesInChat = async ({
   const _page = page > 1 ? page : 1;
   const _count = count > 10 ? count : 10;
   const skip = (_page - 1) * _count;
-  const chat = await chatService.getMessages(chatId, skip, count);
+  const chat = await chatService.getMessages(chatId, skip, _count);
   return {
     messages: chat,
     totalCount: chat.length,

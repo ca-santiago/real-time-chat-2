@@ -61,6 +61,14 @@ const getMessages = async (
     .sort({ timestamp: -1 });
 };
 
+const getChatsByUserId = async (
+  userId: string,
+  offset: number,
+  count: number
+): Promise<Chat[]> => {
+  return ChatModel.find({ members: userId })//.skip(offset).limit(count);
+};
+
 const chatService: ChatService = {
   addMemberToChat,
   checkExistingChat,
@@ -69,6 +77,7 @@ const chatService: ChatService = {
   removeMemberFromChat,
   sendMessage,
   createChat,
+  getChatsByUserId,
 };
 
 export default chatService;
