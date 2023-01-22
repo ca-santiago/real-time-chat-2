@@ -8,6 +8,7 @@ import morgan from "morgan";
 import ChatManager from "./chat/sockets";
 import { startMongoConnection } from "./mongodb";
 import { authRouter, chatRouter } from "../router";
+import userRouter from "../router/user";
 // import messagesRouter from "../router/message";
 
 export default class Server {
@@ -30,6 +31,7 @@ export default class Server {
     this.app.use(cors({ methods: "*" }));
     this.app.use(express.static(resolve(__dirname, "../public")));
     this.app.use("/auth", authRouter);
+    this.app.use("/user", userRouter);
     this.app.use("/chat", chatRouter);
     // this.app.use("/messages", messagesRouter);
   }

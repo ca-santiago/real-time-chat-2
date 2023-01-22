@@ -3,6 +3,7 @@ import { UserUseCases } from "../../domain/user";
 import { check } from "express-validator";
 import { validateBody } from "../middlewares/validations";
 import { AppController } from "../types";
+import { getUserId } from "./helpers";
 
 const login: AppController = async (req, res) => {
   try {
@@ -11,7 +12,6 @@ const login: AppController = async (req, res) => {
     const loginData = await UserUseCases.loginUser({ email, password });
     return res.status(200).json(loginData);
   } catch (err: any) {
-    console.log(err);
     res.status(500).send(err.message).end();
   }
 };
@@ -43,6 +43,26 @@ const renewToken: AppController = async (req, res) => {
   }
 };
 
+const getUserById: AppController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await UserUseCases.getUserById(id);
+    res.status(200).json(result);
+  } catch (err: any) {
+    res.status(500).send(err.message).end();
+  }
+};
+
+const getUserData: AppController = async (req, res) => {
+  try {
+    const userId = getUserId(req);
+    const result = await UserUseCases.getUserById(userId);
+    res.status(200).json(result);
+  } catch (err: any) {
+    res.status(500).send(err.message).end();
+  }
+};
+
 const authControllers = {
   login: [
     check("email").isEmail(),
@@ -64,6 +84,8 @@ const authControllers = {
     register,
   ],
   renewToken,
+  getUserData,
+  getUserById
 };
 
 export default authControllers;
